@@ -24,6 +24,22 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "updates": {
+      "url": "https://u.expo.dev/86d516f3-5255-4b57-afca-3d96a0b01a66"
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "86d516f3-5255-4b57-afca-3d96a0b01a66"
+      }
+    },
+    "owner": "jaidon",
+    "runtimeVersion": {
+      "policy": "appVersion"
     }
   }
 }
