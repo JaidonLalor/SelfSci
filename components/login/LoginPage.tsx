@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import Screen from '@/shared/Screen'
 import { TextInput, View, Button, Text } from 'react-native'
 import { useAuth } from '@/stores/auth'
 import { useRouter } from 'expo-router'
@@ -39,8 +39,8 @@ export default function LoginPage() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', gap: 20, padding: 24, backgroundColor: '#D5D5D5' }}>
-      <Text style={{ fontSize: 36, color: '#B4B4B4', fontFamily: 'monospace' }}>Tracker</Text>
+    <Screen style={{ gap: 20, alignItems: 'center' }}>
+      <Text style={{ fontSize: 36, color: '#B4B4B4' }}>Tracker</Text>
       <View style={{ backgroundColor: 'white', padding: 24, borderRadius: 8, width: '100%', maxWidth: 320 }}>
         <Text>Email</Text>
         <TextInput
@@ -64,6 +64,6 @@ export default function LoginPage() {
         <Button title={isLoading ? 'Logging In' : "Log In"} onPress={handleLogin} disabled={isLoading} />
         <Button title="Sign Up" color="gray" />
       </View>
-    </SafeAreaView>
+    </Screen>
   )
 }

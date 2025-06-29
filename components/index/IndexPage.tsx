@@ -1,9 +1,8 @@
-import { SafeAreaView } from "react-native-safe-area-context";
 import { Pressable, Text, View } from "react-native";
 import { styles } from "./IndexPage.styles";
 import { useRouter } from "expo-router";
-import { Platform } from 'react-native'
-import { supabase } from "@/lib/supabase";
+import { globalStyles } from "@/shared/globalStyles";
+import Screen from "@/shared/Screen";
 
 export default function IndexPage() {
     const router = useRouter()
@@ -15,45 +14,44 @@ export default function IndexPage() {
     })
 
     return (
-        <SafeAreaView style={[
-            styles.background,
-            { paddingTop: Platform.OS === 'web' ? 48 : 0 },
-            { paddingBottom: Platform.OS === 'web' ? 48 : 0 }
-        ]}>
+        <Screen>
             <View style={styles.title}>
                 <Text style={styles.tracker}>Tracker</Text>
                 <Text style={styles.date}>{today}</Text>
             </View>
 
-            <View style={styles.menu}>
+            <View style={globalStyles.content}>
                 <Pressable
                     onPress={() => router.push('/mood')}
-                    style={styles.pressable}
+                    style={globalStyles.textMenuPressable}
                 >
-                    <Text style={styles.pressableText}>Mood</Text>
+                    <Text style={globalStyles.textMenuText} >Mood</Text>
                 </Pressable>
-                <Pressable style={styles.pressable} >
-                    <Text style={styles.pressableTextDisabled}>Diet</Text>
+                <Pressable
+                    onPress={() => router.push('/workout')}
+                    style={globalStyles.textMenuPressable}
+                >
+                    <Text style={globalStyles.textMenuText} >Workout</Text>
                 </Pressable>
-                <Pressable style={styles.pressable} >
-                    <Text style={styles.pressableTextDisabled}>Biotracker</Text>
+                <Pressable style={globalStyles.textMenuPressable} >
+                    <Text style={globalStyles.textMenuTextDisabled} >Diet</Text>
                 </Pressable>
-                <Pressable style={styles.pressable} >
-                    <Text style={styles.pressableTextDisabled}>Workout</Text>
+                <Pressable style={globalStyles.textMenuPressable} >
+                    <Text style={globalStyles.textMenuTextDisabled} >Biotracker</Text>
                 </Pressable>
-                <Pressable style={styles.pressable} >
-                    <Text style={styles.pressableTextDisabled}>EEG</Text>
+                <Pressable style={globalStyles.textMenuPressable} >
+                    <Text style={globalStyles.textMenuTextDisabled} >EEG</Text>
                 </Pressable>
-                <Pressable style={styles.pressable} >
-                    <Text style={styles.pressableTextDisabled}>Journal</Text>
+                <Pressable style={globalStyles.textMenuPressable} >
+                    <Text style={globalStyles.textMenuTextDisabled} >Journal</Text>
                 </Pressable>
-                <Pressable style={styles.pressable} >
-                    <Text style={styles.pressableTextDisabled}>Task</Text>
+                <Pressable style={globalStyles.textMenuPressable} >
+                    <Text style={globalStyles.textMenuTextDisabled} >Task</Text>
                 </Pressable>
-                <Pressable style={styles.pressable} >
-                    <Text style={styles.pressableTextDisabled}>Receipt</Text>
+                <Pressable style={globalStyles.textMenuPressable} >
+                    <Text style={globalStyles.textMenuTextDisabled} >Receipt</Text>
                 </Pressable>
             </View>
-        </SafeAreaView>
+        </Screen>
     )
 }

@@ -19,23 +19,5 @@ export const styles = StyleSheet.create({
   },
   date: {
     color: '#B4B4B4'
-  },
-  menu: {
-    flex: 1,
-    display: 'flex',
-    justifyContent: 'center'
-  },
-  pressable: {
-    paddingTop: 8,
-    paddingBottom: 8,
-    alignSelf: 'flex-start'
-  },
-  pressableText: {
-    fontSize: 24,
-    color: '#666666'
-  },
-  pressableTextDisabled: {
-    fontSize: 24,
-    color: '#B4B4B4'
   }
 })

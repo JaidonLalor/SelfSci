@@ -1,27 +1,30 @@
 import { supabase } from '@/lib/supabase'
 
 type MoodEntry = {
-    id: string //uuid
-    user_id: string //uuid
+    id: string // uuid
+    user_id: string // uuid
     feelings?: { feeling: string; rating: number }[]
-    valence?: number
+    valence?: number // +5 to -5
+    energy?: number // +5 to -5
     note?: string
     attachedEntryType?: string
-    attachedEntryId?: string //uuid
-    entry_timestamp: string //ISO 8601
-    last_updated: string //ISO 8601
-    created_at: string //ISO 8601
+    attachedEntryId?: string // uuid
+    entry_timestamp: string // ISO 8601 - Date of log
+    last_updated: string // ISO 8601
+    created_at: string // ISO 8601 - Date created in DB
 }
 
 export async function saveMoodEntry({
   feelings,
   valence,
+  energy,
   note,
   attachedEntryType,
   attachedEntryId,
 }: {
   feelings?: { feeling: string; rating: number }[]
   valence?: number
+  energy?: number
   note?: string
   attachedEntryType?: string
   attachedEntryId?: string
@@ -40,7 +43,7 @@ export async function saveMoodEntry({
   const payload: any = {
     user_id: session.user.id,
     valence,
-    note,
+    energy,
     attached_entry_type: attachedEntryType,
     attached_entry_id: attachedEntryId,
     entry_timestamp: now,
@@ -48,8 +51,7 @@ export async function saveMoodEntry({
   }
 
   if (feelings) payload.feelings = feelings
-
-  console.log('Insert payload:', payload)
+  if (note) payload.note = note
   
   const { data, error } = await supabase
     .from('mood_entries')
