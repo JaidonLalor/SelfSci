@@ -8,27 +8,49 @@ import { formatISO, parseISO, format } from 'date-fns'
 import { emptyExerciseSet, ExerciseSet } from "@/lib/supabase/exercise";
 import { styles } from "./Exercise.styles";
 import { Fontisto } from "@expo/vector-icons";
-import { useState } from "react";
+import { useEffect, useMemo } from "react";
 import ExerciseEditor from "./ExerciseEditor";
+import { useExerciseEditor } from "@/stores/exercise_editor";
 
 export default function Exercise() {
     const { name: rawName } = useLocalSearchParams()
     const name = Array.isArray(rawName) ? rawName[0] : rawName
     const { exerciseSets } = useExerciseSets()
-    const [exerciseEditorOpen, setExerciseEditorOpen] = useState<boolean>(false)
+    const { isOpen, setIsOpen, setEditorSet } = useExerciseEditor()
 
-    const setsForExercise = exerciseSets?.filter(
-        (set) => set.name === name
-    )
+    // Set default new exercise entry to most recent entry
+    const setsForExercise = useMemo(() => {
+        return exerciseSets?.filter((set) => set.name === name)
+    }, [exerciseSets, name])
+    useEffect(() => {
+        if (!name) return
 
-    const mostRecent = setsForExercise?.[0]
-    const initialEditorSet: ExerciseSet = {
-        ...emptyExerciseSet,
-        name: name ?? '',
-        reps: mostRecent?.reps ?? 0,
-        weight_lbs: mostRecent?.weight_lbs ?? 0,
-    }
-    const [editorSet, setEditorSet] = useState<ExerciseSet>(initialEditorSet)
+        const mostRecent = setsForExercise?.slice().sort((a, b) =>
+            new Date(b.entry_timestamp).getTime() - new Date(a.entry_timestamp).getTime()
+        )[0]
+        const latestEditorSet: ExerciseSet = {
+            ...emptyExerciseSet,
+            name: name ?? '',
+            reps: mostRecent?.reps ?? 0,
+            weight_lbs: mostRecent?.weight_lbs ?? 0,
+        }
+        
+        setEditorSet(latestEditorSet)
+    }, [name, setsForExercise, setEditorSet])
+
+    // Auto open new exercise popup if no records
+    useEffect(() => {
+        if (!exerciseSets) {
+            setIsOpen(true)
+            return
+        }
+
+        const setsForExercise = exerciseSets.filter(set => set.name === name)
+
+        if (setsForExercise.length === 0) {
+            setIsOpen(true)
+        }
+    }, [exerciseSets, name])
 
     const groupedByDate = setsForExercise?.reduce((acc, set) => {
         const date = formatISO(new Date(set.entry_timestamp), { representation: 'date'}) // YYYY-MM-DD
@@ -36,11 +58,6 @@ export default function Exercise() {
         acc[date].push(set)
         return acc
     }, {} as Record<string, ExerciseSet[]>)
-
-    const handlePopupClose = () => {
-        setExerciseEditorOpen(false)
-        setEditorSet(initialEditorSet)
-    }
 
     return (
         <Screen>
@@ -64,14 +81,16 @@ export default function Exercise() {
                                             <View style={styles.horizontalLine} />
                                         </View>
 
-                                        {sets.map((set, index) => {
+                                        {sets
+                                            .sort((a, b) => new Date(b.entry_timestamp).getTime() - new Date(a.entry_timestamp).getTime())
+                                            .map((set, index) => {
                                             const formattedSetDate = format(parseISO(set.entry_timestamp), 'h:mma')
 
                                             return (
                                                 <Pressable
                                                     onPress={() => {
                                                         setEditorSet(set)
-                                                        setExerciseEditorOpen(true)
+                                                        setIsOpen(true)
                                                     }}
                                                     key={index}
                                                 >
@@ -99,18 +118,12 @@ export default function Exercise() {
             </View>
 
             <View style={styles.addButtonContainer}>
-                <Pressable style={styles.addButton} onPress={() => setExerciseEditorOpen(true)}>
+                <Pressable style={styles.addButton} onPress={() => setIsOpen(true)}>
                     <Fontisto name="plus-a" size={24} color="#666666" />
                 </Pressable>
             </View>
 
-            {exerciseEditorOpen && (
-                <ExerciseEditor
-                    editorSet={editorSet}
-                    setEditorSet={setEditorSet}
-                    onClose={() => handlePopupClose()}
-                />
-            )}
+            {isOpen && <ExerciseEditor />}
         </Screen>
     )
 }

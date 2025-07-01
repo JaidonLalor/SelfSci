@@ -41,7 +41,7 @@ export default function IndexPage() {
                     <>
                         <Text style={styles.stateMessage}>Error! {error}</Text>
                         <Button
-                            onPress={fetchExerciseSetsWithStore}
+                            onPress={() => fetchExerciseSetsWithStore()}
                             text="Retry"
                         />
                     </>

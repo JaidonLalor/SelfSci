@@ -1,48 +1,40 @@
-import { ExerciseSet } from "@/lib/supabase/exercise"
 import { Pressable, View, Text } from "react-native"
 import { styles } from './ExerciseEditor.styles'
 import Button from "@/shared/Button"
 import { Fontisto, Ionicons } from "@expo/vector-icons"
-import { Dispatch, SetStateAction, useState } from "react"
 import { deleteExerciseSetWithStore, updateExerciseSetWithStore } from "@/actions/exercise"
 import { getErrorMessage } from "@/lib/utils"
+import { useExerciseEditor } from "@/stores/exercise_editor"
 
-type ExerciseEditorProps = {
-    editorSet: ExerciseSet
-    setEditorSet: Dispatch<SetStateAction<ExerciseSet>>
-    onClose: () => void
-}
-
-export default function ExerciseEditor({ editorSet, setEditorSet, onClose }: ExerciseEditorProps) {
-    const [loading, setLoading] = useState<boolean>(false)
-    const [error, setError] = useState<string>('')
+export default function ExerciseEditor() {
+    const { loading, error, editorSet, setLoading, setError, setIsOpen, setEditorSet } = useExerciseEditor()
 
     const handleIncrementReps = () => {
-        setEditorSet((prev) => ({
-            ...prev,
-            reps: (prev?.reps ?? 0) + 1,
-        }))
+        setEditorSet({
+            ...editorSet,
+            reps: (editorSet?.reps ?? 0) + 1
+        })
     }
 
     const handleDecrementReps = () => {
-        setEditorSet((prev) => ({
-            ...prev,
-            reps: Math.max(0, (prev?.reps ?? 0) - 1),
-        }))
+        setEditorSet({
+            ...editorSet,
+            reps: Math.max(0, (editorSet?.reps ?? 0) - 1),
+        })
     }
 
     const handleIncrementWeight = () => {
-        setEditorSet((prev) => ({
-            ...prev,
-            weight_lbs: (prev?.weight_lbs ?? 0) + 2.5,
-        }))
+        setEditorSet({
+            ...editorSet,
+            weight_lbs: (editorSet?.weight_lbs ?? 0) + 2.5
+        })
     }
 
     const handleDecrementWeight = () => {
-        setEditorSet((prev) => ({
-            ...prev,
-            weight_lbs: Math.max(0, (prev?.weight_lbs ?? 0) -2.5)
-        }))
+        setEditorSet({
+            ...editorSet,
+            weight_lbs: Math.max(0, (editorSet.weight_lbs ?? 0) -2.5)
+        })
     }
 
     const handleSubmit = async () => {
@@ -50,7 +42,7 @@ export default function ExerciseEditor({ editorSet, setEditorSet, onClose }: Exe
             setLoading(true)
             setError('')
             await updateExerciseSetWithStore({ newSet: editorSet })
-            onClose()
+            setIsOpen(false)
         } catch (error) {
             const msg = getErrorMessage(error)
             setError(msg)
@@ -64,7 +56,7 @@ export default function ExerciseEditor({ editorSet, setEditorSet, onClose }: Exe
             setLoading(true)
             setError('')
             await deleteExerciseSetWithStore(id)
-            onClose()
+            setIsOpen(false)
         } catch (error) {
             const msg = getErrorMessage(error)
             setError(msg)
@@ -77,7 +69,7 @@ export default function ExerciseEditor({ editorSet, setEditorSet, onClose }: Exe
     // BLUEPRINT: Add note input
     
     return (
-        <Pressable style={styles.overlay} onPress={onClose}>
+        <Pressable style={styles.overlay} onPress={() => setIsOpen(false)}>
             <View style={styles.popup}>
                 <View style={styles.inputRow}>
                     <Pressable style={styles.button} onPress={handleDecrementReps}>

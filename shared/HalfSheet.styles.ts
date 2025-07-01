@@ -6,17 +6,16 @@ export const styles = StyleSheet.create({
         inset: 0,
         backgroundColor: 'rgba(102,102,102,0.66)'
     },
-    popup: {
+    sheet: {
         position: 'absolute',
         left: 0,
         bottom: 0,
         right: 0,
-        height: '42%',
         backgroundColor: '#D5D5D5',
         borderTopLeftRadius: 18,
         borderTopRightRadius: 18,
         padding: 24,
         display: 'flex',
         gap: 24
-    },
+    }
 })

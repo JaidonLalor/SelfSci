@@ -33,5 +33,8 @@ export const globalStyles = StyleSheet.create({
     textMenuTextDisabled: {
         fontSize: 24,
         color: '#B4B4B4'
+    },
+    errorMessage: {
+        color: 'red'
     }
 })
