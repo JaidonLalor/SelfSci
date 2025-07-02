@@ -56,7 +56,7 @@ export async function updateExerciseSet(payload: Partial<ExerciseSet>): Promise<
     .single()
 
   if (error || !data) {
-    throw new Error(error?.message || 'Unknown error saving mood entry')
+    throw new Error(error?.message || 'Unknown error saving exercise set')
   }
 
   return data as ExerciseSet

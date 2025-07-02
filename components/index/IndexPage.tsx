@@ -45,13 +45,13 @@ export default function IndexPage() {
                 <Pressable style={globalStyles.textMenuPressable} >
                     <Text style={globalStyles.textMenuTextDisabled} >Journal</Text>
                 </Pressable>
-                <Pressable
-                    onPress={() => router.push('/receipt')}
-                    style={globalStyles.textMenuPressable}
-                    >
+                <Pressable style={globalStyles.textMenuPressable} >
                     <Text style={globalStyles.textMenuTextDisabled} >Task</Text>
                 </Pressable>
-                <Pressable style={globalStyles.textMenuPressable} >
+                <Pressable
+                    style={globalStyles.textMenuPressable}
+                    onPress={() => router.push('/receipt')}
+                    >
                     <Text style={globalStyles.textMenuText} >Receipt</Text>
                 </Pressable>
             </View>
