@@ -6,9 +6,17 @@ import { Pressable, View } from "react-native"
 import { styles } from "./IndexPage.styles"
 import { useExpenseEditor } from "@/stores/expense_editor"
 import ExpenseEditor from "./ExpenseEditor"
+import { useEffect, useState } from "react"
+import { useExpenseEntries } from "@/stores/expense_entries"
 
 export default function IndexPage() {
     const { isOpen, setIsOpen } = useExpenseEditor()
+    const [loading, setLoading] = useState<boolean>(false)
+    const [error, setError] = useState<string>('')
+
+    useEffect(() => {
+
+    }, [])
 
     return (
         <Screen>
