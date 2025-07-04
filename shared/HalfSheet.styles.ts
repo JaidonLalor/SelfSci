@@ -15,7 +15,10 @@ export const styles = StyleSheet.create({
         borderTopLeftRadius: 18,
         borderTopRightRadius: 18,
         padding: 24,
+    },
+    container: {
         display: 'flex',
-        gap: 24
+        gap: 24,
+        paddingBottom: 24
     }
 })

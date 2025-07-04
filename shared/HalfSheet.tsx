@@ -1,5 +1,5 @@
 import { ReactNode } from "react"
-import { Keyboard, KeyboardAvoidingView, Platform, Pressable, TouchableWithoutFeedback } from "react-native"
+import { Keyboard, KeyboardAvoidingView, Platform, Pressable, TouchableWithoutFeedback, View } from "react-native"
 import { styles } from './HalfSheet.styles'
 
 type HalfSheetProps = {
@@ -14,9 +14,10 @@ export default function HalfSheet({ children, onClose }: HalfSheetProps) {
                 <KeyboardAvoidingView
                     behavior={Platform.OS === 'ios' ? 'padding' : undefined}
                     style={styles.sheet}
-                    keyboardVerticalOffset={24}
                 >
-                    {children}
+                    <View style={styles.container}>
+                        {children}
+                    </View>
                 </KeyboardAvoidingView>
             </TouchableWithoutFeedback>
         </Pressable>

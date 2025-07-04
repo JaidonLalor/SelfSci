@@ -10,6 +10,7 @@ export type ExpenseEditorState = {
     setLoading: (loading: boolean) => void
     setError: (error: string) => void
     setIsOpen: (isOpen: boolean) => void
+    reset: () => void
 }
 
 export const useExpenseEditor = create<ExpenseEditorState>((set) => ({
@@ -23,5 +24,11 @@ export const useExpenseEditor = create<ExpenseEditorState>((set) => ({
         })),
     setLoading: (loading) => set({ loading }),
     setError: (error) => set({ error }),
-    setIsOpen: (isOpen) => set({ isOpen })
+    setIsOpen: (isOpen) => set({ isOpen }),
+    reset: () => set({
+      editorExpense: emptyExpenseEntry,
+      isOpen: false,
+      loading: false,
+      error: '',
+    }),
 }))

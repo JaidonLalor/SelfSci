@@ -19,17 +19,20 @@ export default function IndexPage() {
     const [addExerciseOpen, setAddExerciseOpen] = useState<boolean>(false)
 
     useEffect(() => {
-        if (!exerciseSets) {
-            try {
-                setLoading(true)
-                fetchExerciseSetsWithStore()
-            } catch (error) {
-                const msg = getErrorMessage(error)
-                setError(msg)
-            } finally {
-                setLoading(false)
+        const getData = async () => {
+            if (!exerciseSets) {
+                try {
+                    setLoading(true)
+                    await fetchExerciseSetsWithStore()
+                } catch (error) {
+                    const msg = getErrorMessage(error)
+                    setError(msg)
+                } finally {
+                    setLoading(false)
+                }
             }
         }
+        getData()
     }, [exerciseSets])
 
     return (
