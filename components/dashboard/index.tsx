@@ -1,10 +1,8 @@
 import { Pressable, Text, View } from "react-native";
-import { styles } from "./IndexPage.styles";
+import { styles } from "./dashboard.styles";
 import { useRouter } from "expo-router";
 import { globalStyles } from "@/shared/globalStyles";
 import Screen from "@/shared/Screen";
-import { useEffect } from "react";
-import { fetchUserSettingsWithStore } from "@/actions/userSettings";
 import { useUserSettings } from "@/stores/user_settings";
 
 export default function IndexPage() {

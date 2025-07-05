@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "tracker",
+    "name": "Tracker",
     "slug": "tracker",
     "scheme": "tracker",
     "version": "1.0.0",
@@ -11,7 +11,7 @@
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#D5D5D5"
     },
     "ios": {
       "supportsTablet": true,
@@ -19,13 +19,6 @@
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "edgeToEdgeEnabled": true
     },
     "web": {
       "favicon": "./assets/favicon.png"

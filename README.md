@@ -2,17 +2,14 @@
 
 An experiment to know thyself
 
-## TODO
-
-- [ ] Hide supabase API key env
-
 ## Roadmap
 
 1. Actually use it, and see what needs to be added accordingly
 2. Diet
 3. Garmin
 4. Tasks
-5. Reflection summaries
+5. Reflection summaries (daily, monthly)
+6. Journal
 
 ## How to dev server
 
