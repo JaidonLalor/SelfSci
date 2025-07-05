@@ -26,7 +26,12 @@ export default function Layout() {
       .catch(err => console.error('settings fetch failed', err))
   }, [user, userSettings])
 
-  const isPublicPage = pathname === '/login' || pathname === '/signup' || pathname === '/'
+  const isPublicPage
+    = pathname === '/login'
+    || pathname === '/signup'
+    || pathname === '/'
+    || pathname === '/privacy'
+    || pathname === '/garmin'
 
   if (!user && !isPublicPage) {
     return <Redirect href='/login' />

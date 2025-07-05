@@ -1,4 +1,4 @@
-import Button from '@/shared/Button'
+import { supabase } from '@/lib/supabase'
 import { globalStyles } from '@/shared/globalStyles'
 import Header from '@/shared/Header'
 import Screen from '@/shared/Screen'
@@ -8,10 +8,13 @@ import { useUserSettings } from '@/stores/user_settings'
 import { updateUserSettingsWithStore } from '@/actions/userSettings'
 import { UserSettings } from '@/lib/supabase/user_settings'
 import { useState } from 'react'
+import { getErrorMessage } from '@/lib/utils'
+import { useAuth } from '@/stores/auth'
 
 export default function SettingsPage() {
     const { userSettings } = useUserSettings()
     const [error, setError] = useState<string>('')
+    const { clearAuth } = useAuth()
 
     type MenuKey = keyof NonNullable<UserSettings['enabled_menu_items']>
 
@@ -37,6 +40,16 @@ export default function SettingsPage() {
             })
         } catch (e) {
             setError(String(e))
+        }
+    }
+
+    const handleSignOut = async () => {
+        setError('')
+        try {
+            await supabase.auth.signOut()
+            clearAuth()
+        } catch (error) {
+            setError(getErrorMessage(error))
         }
     }
 
@@ -93,7 +106,9 @@ export default function SettingsPage() {
                     <Text style={{ fontSize: 24, color: '#B4B4B4' }}>EEG</Text>
                 </Pressable>
                 <View/>
-                <Button text="Sign out" layout='fill' color='dark' onPress={() => {}} />
+                <Pressable style={styles.settingsRow} onPress={() => {handleSignOut()}}>
+                    <Text style={{ fontSize: 24, color: '#666666' }}>Sign Out</Text>
+                </Pressable>
             </View>
         </Screen>
     )
