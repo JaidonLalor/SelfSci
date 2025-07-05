@@ -3,7 +3,7 @@ import { colorVariants, sizeVariants, layoutVariants } from './Button.styles'
 
 type Props = {
     text: string
-    color?: 'gray' | 'white' | 'dark'
+    color?: 'gray' | 'white' | 'dark' | 'ghost'
     size?: 'medium' | 'small'
     layout?: 'fill' | 'fit'
     style?: ViewStyle

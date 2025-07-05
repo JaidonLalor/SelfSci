@@ -18,6 +18,13 @@ export const styles = StyleSheet.create({
     color: '#B4B4B4'
   },
   date: {
-    color: '#B4B4B4'
+    fontSize: 16,
+    color: '#B4B4B4',
+    marginBottom: 2
+  },
+  settings: {
+    fontSize: 18,
+    color: '#B4B4B4',
+    textDecorationLine: 'underline'
   }
 })

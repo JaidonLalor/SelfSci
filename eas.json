@@ -11,8 +11,8 @@
     "preview": {
       "distribution": "internal",
       "env": {
-        "EXPO_PUBLIC_SUPABASE_URL": "REDACT",
-        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiREDACT"
+        "EXPO_PUBLIC_SUPABASE_URL": "REDACTED",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "REDACTED"
       }
     },
     "production": {

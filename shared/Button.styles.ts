@@ -12,6 +12,9 @@ export const colorVariants = StyleSheet.create({
   dark: {
     backgroundColor: "#666666",
     color: '#B4B4B4'
+  },
+  ghost: {
+    color: '#666666'
   }
 })
 

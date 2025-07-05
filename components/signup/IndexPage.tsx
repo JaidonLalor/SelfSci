@@ -6,7 +6,6 @@ import Button from '@/shared/Button'
 import TextInput from '@/shared/TextInput'
 import { useAuth } from '@/stores/auth'
 import { useRouter } from 'expo-router'
-import { fetchUserSettingsWithStore } from '@/actions/userSettings'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -22,11 +21,11 @@ export default function LoginPage() {
     }
   }, [user])
 
-  const handleLogin = async () => {
+  const handleSignUp = async () => {
     setError('')
     setIsLoading(true)
 
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+    const { data, error } = await supabase.auth.signUp({ email, password })
 
     if (error) {
       setError(error.message)
@@ -47,7 +46,7 @@ export default function LoginPage() {
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         keyboardVerticalOffset={24}
       >
-        <Text style={{ fontSize: 36, color: '#B4B4B4' }}>Sign In</Text>
+        <Text style={{ fontSize: 36, color: '#B4B4B4' }}>Sign Up</Text>
         <TextInput
           autoCapitalize="none"
           keyboardType="email-address"
@@ -70,8 +69,8 @@ export default function LoginPage() {
           gap: 12,
           justifyContent: 'flex-end'
         }}>
-          <Button text="Sign Up" color="ghost" size='small' onPress={() => router.push('/signup') } />
-          <Button text={isLoading ? 'Logging In' : "Log In"} onPress={handleLogin} disabled={isLoading} size='small' color='dark' />
+          <Button text="Log In" color="ghost" size='small' onPress={() => router.back()} />
+          <Button text={isLoading ? 'Logging In' : "Sign Up"} onPress={handleSignUp} disabled={isLoading} size='small' color='dark' />
         </View>
       </KeyboardAvoidingView>
     </Screen>

@@ -2,12 +2,13 @@ import { useAuth } from '@/stores/auth'
 import { Redirect, Stack, usePathname } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
+import { fetchUserSettingsWithStore } from '@/actions/userSettings'
+import { useUserSettings } from '@/stores/user_settings'
 
 export default function Layout() {
-
   const { user, setAuth } = useAuth()
   const pathname = usePathname()
-  const [ready, setReady] = useState(false)
+  const { userSettings } = useUserSettings()
 
   useEffect(() => {
     const load = async () => {
@@ -15,17 +16,19 @@ export default function Layout() {
       if (data.session) {
         setAuth(data.session.user, data.session)
       }
-      setReady(true)
     }
-
     load()
   }, [])
 
-  if (!ready) return null
+  useEffect(() => {
+    if (!user || userSettings) return
+    fetchUserSettingsWithStore()
+      .catch(err => console.error('settings fetch failed', err))
+  }, [user, userSettings])
 
-  const isLoginPage = pathname === '/login'
+  const isAuthPage = pathname === '/login' || pathname === '/signup'
 
-  if (!user && !isLoginPage) {
+  if (!user && !isAuthPage) {
     return <Redirect href='/login' />
   }
 
