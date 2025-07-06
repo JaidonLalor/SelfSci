@@ -9,7 +9,7 @@ export default function Landing() {
     return (
         <Screen>
             <View style={{ alignItems: 'center', justifyContent: 'center', gap: 24 }}>
-                <Text style={{ fontSize: 96, color: '#B4B4B4' }}>Tracker</Text>
+                <Text style={{ fontSize: 96, color: '#B4B4B4' }}>SelfSci</Text>
                 <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'center', gap: 32 }}>
                     <Image
                         source={require('@/assets/images/tracker-home.png')}
