@@ -19,11 +19,12 @@ export default function Landing() {
                         }}
                         resizeMode="contain"
                     />
-                    <View style={{ width: 300, height: '100%', justifyContent: 'center', gap: 18 }}>
-                        <Text style={{ fontSize: 30, color: '#666666' }}>What gets measured gets managed.</Text>
-                        <Text style={{ fontSize: 18, color: '#B4B4B4' }}>Track spending, exercise, and diet.</Text>
-                        <Text style={{ fontSize: 18, color: '#B4B4B4' }}>See patterns & reflect.</Text>
-                        <Button text='Launch App' size='small' color='gray' onPress={() => router.push('/login')} />
+                    <View style={{ width: 350, height: '100%', justifyContent: 'center', gap: 18 }}>
+                        <Text style={{ fontSize: 30, color: '#666666' }}>Data driven self discovery.</Text>
+                        <Text style={{ fontSize: 18, color: '#B4B4B4' }}>Track your health, spending, and diet.</Text>
+                        <Text style={{ fontSize: 18, color: '#B4B4B4' }}>Uncover patterns and correlations.</Text>
+                        <Text style={{ fontSize: 18, color: '#B4B4B4' }}>Optimize your trajectory.</Text>
+                        <Button text='Launch App' size='small' color='gray' onPress={() => router.push('/login')} style={{ marginTop: 2 }} />
 
                         <Pressable
                             style={{ position: 'absolute', bottom: 24 }}
