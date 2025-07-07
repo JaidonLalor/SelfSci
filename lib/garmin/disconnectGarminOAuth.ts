@@ -3,6 +3,7 @@ import { getSupabaseEdgeUrl } from "./getSupabaseEdgeUrl"
 import { getErrorMessage } from "../utils"
 import { useState } from "react"
 import { updateUserSettingsWithStore } from "@/actions/userSettings"
+import { supabase } from "../supabase"
 
 export function useDisconnectGarminOAuth() {
     const { userSettings } = useUserSettings()
@@ -22,9 +23,14 @@ export function useDisconnectGarminOAuth() {
         setError(null)
 
         try {
+            const session = await supabase.auth.getSession()
+            const accessToken = session.data?.session?.access_token
             const res = await fetch(`${edgeUrl}/disconnect-garmin-oauth`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`,
+                },
                 body: JSON.stringify({ accessToken, refreshToken, tokenIssuedAt }),
             })
 

@@ -1,6 +1,6 @@
 [functions.exchange-garmin-token]
     enabled = true
-    verify_jwt = false
+    verify_jwt = true
     import_map = "./functions/exchange-garmin-token/deno.json"
     entrypoint = "./functions/exchange-garmin-token/index.ts"
 [functions.disconnect-garmin-oauth]
