@@ -13,4 +13,4 @@ supabase stop
 Note: Requires docker: https://docs.docker.com/desktop/setup/install/mac-install/
 
 ## Deploy to supabase
-supabase deploy {function-name}
+supabase functions deploy --all

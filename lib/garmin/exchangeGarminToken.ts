@@ -36,7 +36,7 @@ export function useExchangeGarminToken() {
       const result = await res.json()
       setData(result)
       // Update db with token here
-      
+
       try {
         await updateUserSettingsWithStore({
           newUserSettings: {
