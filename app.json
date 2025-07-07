@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "Tracker",
+    "name": "SelfSci",
     "slug": "tracker",
-    "scheme": "tracker",
+    "scheme": "selfsci",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -24,7 +24,8 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "expo-secure-store"
     ],
     "updates": {
       "url": "https://u.expo.dev/86d516f3-5255-4b57-afca-3d96a0b01a66"
