@@ -12,6 +12,7 @@ import { getErrorMessage } from '@/lib/utils'
 import { useAuth } from '@/stores/auth'
 import { startGarminOAuth } from '@/lib/garmin/startGarminOAuth'
 import { useRouter } from 'expo-router'
+import { useDisconnectGarminOAuth } from '@/lib/garmin/disconnectGarminOAuth'
 
 export default function SettingsPage() {
     const { userSettings } = useUserSettings()
@@ -64,6 +65,8 @@ export default function SettingsPage() {
             console.error(msg)
         }
     }
+
+    const { result, loading: disconnectOAuthLoading, error: disconnectOAuthError, disconnect: disconnectOAuth } = useDisconnectGarminOAuth()
 
     return (
         <Screen>
@@ -128,12 +131,22 @@ export default function SettingsPage() {
                         <Text style={{ fontSize: 24, color: '#B4B4B4' }}>Biotracker</Text>
                         <View style={styles.line}/>
                     </View>
-                    <Pressable style={styles.settingsRow} onPress={() => handleGarminAuth()}>
-                        <Text style={{ fontSize: 24, color: '#666666' }}>Connect Garmin Account</Text>
-                    </Pressable>
+                    {userSettings?.garmin_sync_enabled ? (
+                        <View>
+                            {disconnectOAuthError && <Text style={globalStyles.errorMessage}>{disconnectOAuthError}</Text>}
+                            {disconnectOAuthLoading && <Text>Loading...</Text>}
+                            <Pressable style={styles.settingsRow} onPress={() => disconnectOAuth()}>
+                                <Text style={{ fontSize: 24, color: '#666666' }}>Disconnect Garmin Account</Text>
+                            </Pressable>
+                        </View>
+                    ) : (
+                        <Pressable style={styles.settingsRow} onPress={() => handleGarminAuth()}>
+                            <Text style={{ fontSize: 24, color: '#666666' }}>Connect Garmin Account</Text>
+                        </Pressable>
+                    )}
                     <Text style={{ fontSize: 24, color: '#B4B4B4' }}>Sync Status: {userSettings?.garmin_sync_enabled ? 'Enabled' : 'Disabled'}</Text>
                     <Pressable style={styles.settingsRow} onPress={() => router.push('/garmin')}>
-                        <Text style={{ fontSize: 24, color: '#B4B4B4' }}>DEV SHORTCUT: Go to /garmin</Text>
+                        <Text style={{ fontSize: 12, color: '#666666' }}>DEV SHORTCUT: Go to /garmin</Text>
                     </Pressable>
                 </View>
 

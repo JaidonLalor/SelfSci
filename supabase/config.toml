@@ -3,3 +3,8 @@
     verify_jwt = false
     import_map = "./functions/exchange-garmin-token/deno.json"
     entrypoint = "./functions/exchange-garmin-token/index.ts"
+[functions.disconnect-garmin-oauth]
+    enabled = true
+    verify_jwt = true
+    import_map = "./functions/disconnect-garmin-oauth/deno.json"
+    entrypoint = "./functions/disconnect-garmin-oauth/index.ts"

@@ -6,11 +6,11 @@ It is to act as a server side middleware to:
 ## Run dev server locally:
 supabase start
 
-supabase functions serve exchange-garmin-token --env-file=.env --no-verify-jwt
+supabase functions serve {function-name} --env-file=.env --no-verify-jwt
 
 supabase stop
 
 Note: Requires docker: https://docs.docker.com/desktop/setup/install/mac-install/
 
 ## Deploy to supabase
-...?
+supabase deploy {function-name}

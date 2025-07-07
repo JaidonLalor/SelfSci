@@ -49,9 +49,9 @@ export default function Garmin() {
         <Screen>
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                 {error && (
-                    <View>
+                    <View style={{ justifyContent: 'center', alignItems: 'center', gap: 12 }}>
                         <Text style={globalStyles.errorMessage}>{error}</Text>
-                        <Button text='go back' onPress={() => router.back()}/>
+                        <Button text='Back to settings' layout='fill' onPress={() => router.push('/settings')}/>
                     </View>
                 )}
 
@@ -59,7 +59,12 @@ export default function Garmin() {
 
                 {data && <Text style={{ color: '#B4B4B4', fontSize: 36 }}>Success!</Text>}
 
-                {isInExpoGo && <Text>Expo Go detected. Redirect later.</Text>}
+                {isInExpoGo && (
+                    <View style={{ justifyContent: 'center', alignItems: 'center', gap: 12 }}>
+                        <Text>Expo Go detected. Redirect later.</Text>
+                        <Button text='Back to main' layout='fill' onPress={() => router.push('/')}/>
+                    </View>
+                )}
 
                 {/* {isInExpoGo && (
                     <View style={{ gap: 8 }}>
