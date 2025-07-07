@@ -13,6 +13,10 @@ export type UserSettings = {
     theme: 'gray' | null
     updated_at: string // ISO
     created_at: string // ISO
+    garmin_sync_enabled: boolean
+    garmin_access_token: string | null
+    garmin_refresh_token: string | null
+    garmin_token_issued_at: string | null // ISO
 }
 
 export const DEFAULT_USER_SETTINGS: UserSettings = {
@@ -27,7 +31,11 @@ export const DEFAULT_USER_SETTINGS: UserSettings = {
     },
     theme: 'gray',
     updated_at: '',
-    created_at: ''
+    created_at: '',
+    garmin_sync_enabled: false,
+    garmin_access_token: null,
+    garmin_refresh_token: null,
+    garmin_token_issued_at: null
 }
 
 export async function getUserSettings(): Promise<UserSettings> {
@@ -47,6 +55,7 @@ export async function getUserSettings(): Promise<UserSettings> {
     if (error) throw new Error(error?.message || 'Unknown error getting user settings')
 
     if (!data) {
+        // initialize user_settings for new user
         const now = new Date().toISOString()
 
         const initPayload: Partial<UserSettings> = {
@@ -70,7 +79,11 @@ export async function getUserSettings(): Promise<UserSettings> {
 
 export async function updateUserSettings({
     enabled_menu_items,
-    theme
+    theme,
+    garmin_sync_enabled,
+    garmin_access_token,
+    garmin_refresh_token,
+    garmin_token_issued_at
 }: Partial<UserSettings>): Promise<UserSettings> {
     const {
         data: { session },
@@ -86,8 +99,12 @@ export async function updateUserSettings({
     const payload: Partial<UserSettings> = {
         user_id: session.user.id,
         updated_at: now,
-        ...(enabled_menu_items !== undefined && { enabled_menu_items: enabled_menu_items }),
-        ...(theme              !== undefined && { theme: theme }),
+        ...(enabled_menu_items     !== undefined && { enabled_menu_items: enabled_menu_items }),
+        ...(theme                  !== undefined && { theme: theme }),
+        ...(garmin_sync_enabled    !== undefined && { garmin_sync_enabled: garmin_sync_enabled }),
+        ...(garmin_access_token    !== undefined && { garmin_access_token: garmin_access_token }),
+        ...(garmin_refresh_token   !== undefined && { garmin_refresh_token: garmin_refresh_token }),
+        ...(garmin_token_issued_at !== undefined && { garmin_token_issued_at: garmin_token_issued_at }),
     }
 
     const { data, error } = await supabase

@@ -8,7 +8,7 @@ export async function fetchUserSettingsWithStore(): Promise<UserSettings> {
     return userSettings
 }
 
-export async function updateUserSettingsWithStore({ newUserSettings }: { newUserSettings: UserSettings }): Promise<UserSettings> {
+export async function updateUserSettingsWithStore({ newUserSettings }: { newUserSettings: Partial<UserSettings> }): Promise<UserSettings> {
     const { setUserSettings } = useUserSettings.getState()
     const updatedUserSettings = await updateUserSettings(newUserSettings)
     setUserSettings(updatedUserSettings)

@@ -1,21 +1,21 @@
 import { useState } from 'react'
-import { useLocalSearchParams } from 'expo-router'
-import { getItem } from '@/lib/utils'
+import { getErrorMessage, getItem } from '@/lib/utils'
 import { getSupabaseEdgeUrl } from './getSupabaseEdgeUrl'
+import { LOCAL_GARMIN_CODE_VERIFIER } from './constants'
+import { updateUserSettingsWithStore } from '@/actions/userSettings'
 
 export function useExchangeGarminToken() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [data, setData] = useState<any>(null)
 
-  const exchange = async () => {
+  const exchange = async ({ state, code }: { state: string, code: string }) => {
     setLoading(true)
     setError(null)
 
     try {
-      const { code, state } = useLocalSearchParams()
       const authCode = Array.isArray(code) ? code[0] : code
-      const codeVerifier = await getItem('garmin_code_verifier')
+      const codeVerifier = await getItem(LOCAL_GARMIN_CODE_VERIFIER)
       const edgeUrl = getSupabaseEdgeUrl()
 
       if (!authCode || !codeVerifier) {
@@ -35,6 +35,22 @@ export function useExchangeGarminToken() {
 
       const result = await res.json()
       setData(result)
+      // Update db with token here
+      
+      try {
+        await updateUserSettingsWithStore({
+          newUserSettings: {
+            garmin_access_token: result?.access_token,
+            garmin_refresh_token: result?.refresh_token,
+            garmin_sync_enabled: true
+          }
+        })
+      } catch (error) {
+        const msg = getErrorMessage(error)
+        setError(msg)
+        throw error
+      }
+
       return result
 
     } catch (err: any) {

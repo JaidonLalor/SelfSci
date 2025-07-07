@@ -1,8 +1,8 @@
 import * as WebBrowser from 'expo-web-browser'
 import * as Crypto from 'expo-crypto'
 import { Platform } from 'react-native'
-import { setItem } from '@/lib/utils'
-import { REDIRECT_URI } from './constants'
+import { removeItem, setItem } from '@/lib/utils'
+import { LOCAL_GARMIN_CODE_VERIFIER, LOCAL_GARMIN_OAUTH_STATE, REDIRECT_URI } from './constants'
 
 function base64UrlEncode(input: string): string {
   return input
@@ -59,13 +59,17 @@ async function generateRandomState(length = 32) {
 }
 
 export async function startGarminOAuth() {
+  // Prevent stale tokens
+  await removeItem(LOCAL_GARMIN_OAUTH_STATE)
+  await removeItem(LOCAL_GARMIN_CODE_VERIFIER)
+  
   const { code_verifier, code_challenge } = await generateCodeVerifierAndChallenge()
 
-  await setItem('garmin_code_verifier', code_verifier)
+  await setItem(LOCAL_GARMIN_CODE_VERIFIER, code_verifier)
 
   const state = await generateRandomState()
 
-  await setItem('garmin_oauth_state', state)
+  await setItem(LOCAL_GARMIN_OAUTH_STATE, state)
 
   const CLIENT_ID = process.env.EXPO_PUBLIC_GARMIN_CLIENT_ID
 

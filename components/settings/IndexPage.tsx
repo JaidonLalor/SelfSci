@@ -11,11 +11,13 @@ import { useState } from 'react'
 import { getErrorMessage } from '@/lib/utils'
 import { useAuth } from '@/stores/auth'
 import { startGarminOAuth } from '@/lib/garmin/startGarminOAuth'
+import { useRouter } from 'expo-router'
 
 export default function SettingsPage() {
     const { userSettings } = useUserSettings()
     const [error, setError] = useState<string>('')
     const { clearAuth } = useAuth()
+    const router = useRouter()
 
     type MenuKey = keyof NonNullable<UserSettings['enabled_menu_items']>
 
@@ -57,7 +59,6 @@ export default function SettingsPage() {
     const handleGarminAuth = async () => {
         try {
             await startGarminOAuth()
-            console.log('garmin successful')
         } catch (error) {
             const msg = getErrorMessage(error)
             console.error(msg)
@@ -129,6 +130,10 @@ export default function SettingsPage() {
                     </View>
                     <Pressable style={styles.settingsRow} onPress={() => handleGarminAuth()}>
                         <Text style={{ fontSize: 24, color: '#666666' }}>Connect Garmin Account</Text>
+                    </Pressable>
+                    <Text style={{ fontSize: 24, color: '#B4B4B4' }}>Sync Status: {userSettings?.garmin_sync_enabled ? 'Enabled' : 'Disabled'}</Text>
+                    <Pressable style={styles.settingsRow} onPress={() => router.push('/garmin')}>
+                        <Text style={{ fontSize: 24, color: '#B4B4B4' }}>DEV SHORTCUT: Go to /garmin</Text>
                     </Pressable>
                 </View>
 
