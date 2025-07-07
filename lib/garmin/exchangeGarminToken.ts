@@ -44,11 +44,14 @@ export function useExchangeGarminToken() {
       // Update db with token here
 
       try {
+        const now = new Date().toISOString()
+
         await updateUserSettingsWithStore({
           newUserSettings: {
             garmin_access_token: result?.access_token,
             garmin_refresh_token: result?.refresh_token,
-            garmin_sync_enabled: true
+            garmin_sync_enabled: true,
+            garmin_token_issued_at: now
           }
         })
       } catch (error) {

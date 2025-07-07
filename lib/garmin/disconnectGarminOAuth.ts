@@ -24,12 +24,12 @@ export function useDisconnectGarminOAuth() {
 
         try {
             const session = await supabase.auth.getSession()
-            const accessToken = session.data?.session?.access_token
+            const supabaseAccessToken = session.data?.session?.access_token
             const res = await fetch(`${edgeUrl}/disconnect-garmin-oauth`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken}`,
+                    'Authorization': `Bearer ${supabaseAccessToken}`,
                 },
                 body: JSON.stringify({ accessToken, refreshToken, tokenIssuedAt }),
             })
