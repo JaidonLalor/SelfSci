@@ -30,8 +30,27 @@ export default function FoodEditor() {
     const handleSubmit = async () => {
         setLoading(true)
         setError('')
+
+        const servings = Number(servingsField || 0)
+        const calories = Number(caloriesField || 0)
+        const protein = Number(proteinField || 0)
+        const carbs = Number(carbsField || 0)
+        const fat = Number(fatsField || 0)
+
         try {
-            await updateFoodEntryWithStore({ newFood: editorFood })
+            
+            if (!editorFood.servings_unit) throw new Error('No serving size')
+
+            await updateFoodEntryWithStore({
+                newFood: {
+                    ...editorFood,
+                    servings,
+                    calories,
+                    protein_g: protein,
+                    carbs_g: carbs,
+                    fat_g: fat,
+                }
+            })
             setIsOpen(false)
             reset()
         } catch (error) {
@@ -92,6 +111,7 @@ export default function FoodEditor() {
                         <Text style={styles.label}>Food name</Text>
                         <TextInput
                             ref={foodNameRef}
+                            placeholder="Oats"
                             value={editorFood.name}
                             onChangeText={(value) => {
                                 setEditorFood((prev) => ({ ...prev, name: value }))}
@@ -113,6 +133,7 @@ export default function FoodEditor() {
                                     setEditorFood((prev) => ({ ...prev, servings_unit: value }))}
                                 }
                                 onSubmitEditing={handleFocusServingNameField}
+                                placeholder="1 cup"
                                 returnKeyType="done"
                                 autoCapitalize="words"
                                 autoCorrect={false}

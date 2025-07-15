@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "SelfSci",
-    "slug": "selfsci",
+    "slug": "tracker",
     "scheme": "selfsci",
     "version": "1.0.0",
     "orientation": "portrait",
