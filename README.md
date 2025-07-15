@@ -1,4 +1,4 @@
-# Tracker
+# SelfSci
 
 An experiment to know thyself
 
@@ -31,13 +31,18 @@ Notes:
 
 ## How to build for iphone
 
-1. Setup phone for provisioning: eas device:create
-2. Build in cloud: eas build --platform ios --profile preview
-3. Download on phone via QR code or link
-
+### Config
+Setup phone for provisioning: eas device:create
 Note: env vars must be implemented in the profile's eas.json, and app.json must have scheme defined
 
-## How to view crash logs
+### Build in cloud
+1. eas build --platform ios --profile preview
+2. Download on phone via QR code or link
+
+### Build locally
+For IOS, you have to prebuild and then build in Xcode... idk how to do it
+
+## How to view iphone crash logs
 
 1. Plug phone into computer
 2. Open xcode

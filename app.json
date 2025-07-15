@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "SelfSci",
-    "slug": "tracker",
+    "slug": "selfsci",
     "scheme": "selfsci",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -15,7 +15,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.jaidon.tracker",
+      "bundleIdentifier": "com.jaidon.selfsci",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
