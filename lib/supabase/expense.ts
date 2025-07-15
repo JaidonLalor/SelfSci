@@ -5,7 +5,7 @@ export type ExpenseEntry = {
   user_id: string
   name: string
   amount: number // USD
-  context: 'business' | 'personal' | 'untracked'
+  context?: 'business' | 'personal' | 'untracked'
   tags: string[] // ['restaurant', 'software', 'travel']
   note?: string
   recurring_interval?: 'daily' | 'weekly' | 'monthly' | 'yearly' | undefined

@@ -1,30 +1,26 @@
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
-    addButtonContainer: {
-        position: 'absolute',
-        bottom: 48,
-        left: 0,
-        right: 0,
-        height: 82,
+    header: {
         display: 'flex',
-        alignItems: 'center'
+        flexDirection: 'row',
+        justifyContent: 'space-between',
     },
-    addButton: {
-        width: 82,
-        height: 82,
-        borderRadius: 18,
-        backgroundColor: '#E3E3E3',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
+    headerLink: {
+        color: '#B4B4B4',
+        textDecorationLine: 'underline',
+        fontSize: 18
+    },
+    headerLinkRightCol: {
+        gap: 8,
+        alignItems: 'flex-end'
     },
     heroContainer: {
         height: 450,
         display: 'flex',
         justifyContent: 'center'
     },
-    month: {
+    date: {
         color: '#B4B4B4',
         fontSize: 18
     },
@@ -46,12 +42,9 @@ export const styles = StyleSheet.create({
         fontSize: 14,
         width: 80
     },
-    statColumn3: {
-        color: '#B4B4B4',
-        fontSize: 14,
-    },
     entriesContainer: {
-        marginBottom: 120
+        marginBottom: 120,
+        backgroundColor: 'red'
     },
     monthCard: {
         marginBottom: 10
@@ -81,26 +74,22 @@ export const styles = StyleSheet.create({
         color: "#B4B4B4",
         width: '50%'
     },
-    expenseAmount: {
-        fontSize: 18,
-        color: "#B4B4B4",
-        textAlign: 'right',
-        width: '25%'
+    addButtonContainer: {
+        position: 'absolute',
+        bottom: 48,
+        left: 0,
+        right: 0,
+        height: 82,
+        display: 'flex',
+        alignItems: 'center'
     },
-    expenseDate: {
-        fontSize: 18,
-        color: "#B4B4B4",
-        textAlign: 'right',
-        width: '25%'
+    addButton: {
+        width: 82,
+        height: 82,
+        borderRadius: 18,
+        backgroundColor: '#E3E3E3',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
-    expenseNoteContainer: {
-        justifyContent: 'flex-end',
-        alignItems: 'flex-end',
-        paddingBottom: 8
-    },
-    expenseNote: {
-        textAlign: 'right',
-        width: '70%',
-        color: "#B4B4B4"
-    }
 })

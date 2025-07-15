@@ -1,8 +1,8 @@
 import { useLocalSearchParams } from "expo-router";
 import { View, Text, Pressable, ScrollView } from "react-native";
-import Screen from "@/shared/Screen";
-import Header from "@/shared/Header";
-import { globalStyles } from "@/shared/globalStyles";
+import Screen from "@/components/shared/Screen";
+import Header from "@/components/shared/Header";
+import { globalStyles } from "@/components/shared/globalStyles";
 import { useExerciseSets } from "@/stores/exercise_sets";
 import { formatISO, parseISO, format } from 'date-fns'
 import { emptyExerciseSet, ExerciseSet } from "@/lib/supabase/exercise";

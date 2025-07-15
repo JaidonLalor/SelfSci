@@ -1,9 +1,38 @@
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
+    additionsContainer: {
+        flexDirection: 'row',
+        gap: 8
+    },
     contextButtons: {
         flexDirection: 'row',
         gap: 8
+    },
+    dateContainer: {
+        flexDirection: 'row',
+        gap: 8,
+        justifyContent: 'space-between'
+    },
+    dateInputs: {
+        flexDirection: 'row',
+        gap: 8,
+    },
+    yearInput: {
+        width: 60
+    },
+    monthInput: {
+        width: 45
+    },
+    dayInput: {
+        width: 40
+    },
+    noteContainer: {
+        flexDirection: 'row',
+        gap: 8,
+    },
+    noteInput: {
+        flex: 1
     },
     deleteButton: {
         position: 'absolute',

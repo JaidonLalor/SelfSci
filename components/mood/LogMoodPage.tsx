@@ -1,14 +1,14 @@
 import { useRef, useEffect } from 'react'
 import { View, Text, TextInput as RNTextInput } from "react-native";
-import TextInput from '@/shared/TextInput'
+import TextInput from '@/components/shared/TextInput'
 import { styles } from "./LogMoodPage.style";
 import { useRouter } from "expo-router";
-import Button from "@/shared/Button";
-import Slider from "@/shared/Slider";
+import Button from "@/components/shared/Button";
+import Slider from "@/components/shared/Slider";
 import { useState } from "react";
 import { saveMoodEntry } from "@/lib/supabase/mood";
-import Header from '@/shared/Header';
-import Screen from '@/shared/Screen';
+import Header from '@/components/shared/Header';
+import Screen from '@/components/shared/Screen';
 
 export default function LogMoodPage() {
     const router = useRouter()

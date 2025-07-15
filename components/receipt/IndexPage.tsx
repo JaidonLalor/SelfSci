@@ -1,6 +1,6 @@
-import { globalStyles } from "@/shared/globalStyles"
-import Header from "@/shared/Header"
-import Screen from "@/shared/Screen"
+import { globalStyles } from "@/components/shared/globalStyles"
+import Header from "@/components/shared/Header"
+import Screen from "@/components/shared/Screen"
 import { Fontisto } from "@expo/vector-icons"
 import { Pressable, View, Text, ScrollView } from "react-native"
 import { styles } from "./IndexPage.styles"
@@ -114,7 +114,7 @@ export default function IndexPage() {
     }
 
     const monthSummary = getMonthSummary()
-
+    
     return (
         <Screen>
             <Header title="Receipt"/>
@@ -158,16 +158,22 @@ export default function IndexPage() {
                                         {entries &&
                                             entries.map((entry) => (
                                                 <Pressable
-                                                    style={styles.expenseRow}
                                                     key={entry.entry_timestamp}
                                                     onPress={() => {
                                                         setEditorExpense(entry)
                                                         setIsOpen(true)
                                                     }}
                                                 >
-                                                    <Text style={styles.expenseName}>{entry.name}</Text>
-                                                    <Text style={styles.expenseAmount}>${entry.amount.toFixed(2)}</Text>
-                                                    <Text style={styles.expenseDate}>{format(parseISO(entry.entry_timestamp), 'MM.dd')}</Text>
+                                                    <View style={styles.expenseRow}>
+                                                        <Text style={styles.expenseName}>{entry.name}</Text>
+                                                        <Text style={styles.expenseAmount}>${entry.amount.toFixed(2)}</Text>
+                                                        <Text style={styles.expenseDate}>{format(parseISO(entry.entry_timestamp), 'MM.dd')}</Text>
+                                                    </View>
+                                                    {entry.note && (
+                                                        <View style={styles.expenseNoteContainer}>
+                                                            <Text style={styles.expenseNote}>{entry.note}</Text>
+                                                        </View>
+                                                    )}
                                                 </Pressable>
                                             ))
                                         }

@@ -1,11 +1,11 @@
 import { useLocalSearchParams, useRouter } from 'expo-router'
-import Screen from "@/shared/Screen";
+import Screen from "@/components/shared/Screen";
 import { View, Text } from "react-native";
 import { useExchangeGarminToken } from '@/lib/garmin/exchangeGarminToken';
 import { useEffect, useState } from 'react';
-import { globalStyles } from '@/shared/globalStyles';
-import Button from '@/shared/Button';
-import TextInput from '@/shared/TextInput';
+import { globalStyles } from '@/components/shared/globalStyles';
+import Button from '@/components/shared/Button';
+import TextInput from '@/components/shared/TextInput';
 import { removeItem } from '@/lib/utils';
 import Constants from 'expo-constants'
 

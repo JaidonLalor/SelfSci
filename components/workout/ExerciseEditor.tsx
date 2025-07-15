@@ -1,6 +1,6 @@
 import { Pressable, View, Text } from "react-native"
 import { styles } from './ExerciseEditor.styles'
-import Button from "@/shared/Button"
+import Button from "@/components/shared/Button"
 import { Fontisto, Ionicons } from "@expo/vector-icons"
 import { deleteExerciseSetWithStore, updateExerciseSetWithStore } from "@/actions/exercise"
 import { getErrorMessage } from "@/lib/utils"

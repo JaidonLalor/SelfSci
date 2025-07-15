@@ -1,12 +1,12 @@
-import { globalStyles } from "@/shared/globalStyles";
+import { globalStyles } from "@/components/shared/globalStyles";
 import { View, Text, Pressable } from "react-native";
-import Header from "@/shared/Header";
+import Header from "@/components/shared/Header";
 import { useEffect, useState } from "react";
 import { useExerciseSets } from "@/stores/exercise_sets";
 import { styles } from './IndexPage.styles'
-import Button from "@/shared/Button";
+import Button from "@/components/shared/Button";
 import { useRouter } from "expo-router";
-import Screen from "@/shared/Screen";
+import Screen from "@/components/shared/Screen";
 import { fetchExerciseSetsWithStore } from "@/actions/exercise";
 import { getErrorMessage } from "@/lib/utils";
 import NewExercise from "./NewExercise";

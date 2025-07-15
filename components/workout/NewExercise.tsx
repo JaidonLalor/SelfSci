@@ -1,10 +1,10 @@
-import Button from "@/shared/Button";
+import Button from "@/components/shared/Button";
 import { useEffect, useRef, useState } from "react";
 import { getErrorMessage } from "@/lib/utils";
-import HalfSheet from "@/shared/HalfSheet";
-import TextInput from "@/shared/TextInput";
+import HalfSheet from "@/components/shared/HalfSheet";
+import TextInput from "@/components/shared/TextInput";
 import { Keyboard, TextInput as RNTextInput, Text, View } from "react-native";
-import { globalStyles } from "@/shared/globalStyles";
+import { globalStyles } from "@/components/shared/globalStyles";
 import { useRouter } from "expo-router";
 
 type NewExerciseProps = {

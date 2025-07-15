@@ -1,4 +1,4 @@
-import { Pressable, Text, ViewStyle } from "react-native";
+import { Pressable, Text, TouchableOpacity, ViewStyle } from "react-native";
 import { colorVariants, sizeVariants, layoutVariants } from './Button.styles'
 
 type Props = {
@@ -16,7 +16,7 @@ type Props = {
 export default function Button({ text, onPress, color = 'gray', size = 'medium', layout = 'fit', disabled = false, style }: Props) {
 
     return (
-        <Pressable
+        <TouchableOpacity
             style={[
                 sizeVariants[size],
                 colorVariants[color],
@@ -30,6 +30,6 @@ export default function Button({ text, onPress, color = 'gray', size = 'medium',
                 colorVariants[color],
                 sizeVariants[size]
             ]}>{text}</Text>
-        </Pressable>
+        </TouchableOpacity>
     )
 }

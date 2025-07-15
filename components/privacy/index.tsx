@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, Pressable } from "react-native"
 import { styles } from "./index.styles"
-import { globalStyles } from "@/shared/globalStyles"
+import { globalStyles } from "@/components/shared/globalStyles"
 import { useRouter } from "expo-router"
 
 export default function PrivatePolicy() {

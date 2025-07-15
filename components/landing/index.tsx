@@ -1,6 +1,6 @@
 import { Text, View, Image, Pressable } from 'react-native'
-import Screen from '@/shared/Screen'
-import Button from '@/shared/Button'
+import Screen from '@/components/shared/Screen'
+import Button from '@/components/shared/Button'
 import { useRouter } from 'expo-router'
 
 export default function Landing() {

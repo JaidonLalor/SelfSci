@@ -1,8 +1,8 @@
 import { Pressable, Text, View } from "react-native";
 import { styles } from "./dashboard.styles";
 import { useRouter } from "expo-router";
-import { globalStyles } from "@/shared/globalStyles";
-import Screen from "@/shared/Screen";
+import { globalStyles } from "@/components/shared/globalStyles";
+import Screen from "@/components/shared/Screen";
 import { useUserSettings } from "@/stores/user_settings";
 
 export default function IndexPage() {
@@ -47,8 +47,11 @@ export default function IndexPage() {
                 )}
 
                 {userSettings?.enabled_menu_items?.diet && (
-                    <Pressable style={globalStyles.textMenuPressable} >
-                        <Text style={globalStyles.textMenuTextDisabled} >Diet</Text>
+                    <Pressable
+                        onPress={() => router.push('/diet')}
+                        style={globalStyles.textMenuPressable}
+                    >
+                        <Text style={globalStyles.textMenuText} >Diet</Text>
                     </Pressable>
                 )}
 

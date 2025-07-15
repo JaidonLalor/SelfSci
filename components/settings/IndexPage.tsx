@@ -1,7 +1,7 @@
 import { supabase } from '@/lib/supabase'
-import { globalStyles } from '@/shared/globalStyles'
-import Header from '@/shared/Header'
-import Screen from '@/shared/Screen'
+import { globalStyles } from '@/components/shared/globalStyles'
+import Header from '@/components/shared/Header'
+import Screen from '@/components/shared/Screen'
 import { View, Text, Pressable, ScrollView } from 'react-native'
 import { styles } from './IndexPage.styles'
 import { useUserSettings } from '@/stores/user_settings'
@@ -134,9 +134,12 @@ export default function SettingsPage() {
                     {userSettings?.garmin_sync_enabled ? (
                         <View>
                             {disconnectOAuthError && <Text style={globalStyles.errorMessage}>{disconnectOAuthError}</Text>}
-                            {disconnectOAuthLoading && <Text>Loading...</Text>}
                             <Pressable style={styles.settingsRow} onPress={() => disconnectOAuth()}>
-                                <Text style={{ fontSize: 24, color: '#666666' }}>Disconnect Garmin Account</Text>
+                                {!disconnectOAuthLoading ? (
+                                    <Text style={{ fontSize: 24, color: '#666666' }}>Disconnect Garmin Account</Text>
+                                ) : (
+                                    <Text style={{ fontSize: 24, color: '#666666' }}>Loading...</Text>
+                                )}
                             </Pressable>
                         </View>
                     ) : (
@@ -145,9 +148,6 @@ export default function SettingsPage() {
                         </Pressable>
                     )}
                     <Text style={{ fontSize: 24, color: '#B4B4B4' }}>Sync Status: {userSettings?.garmin_sync_enabled ? 'Enabled' : 'Disabled'}</Text>
-                    <Pressable style={styles.settingsRow} onPress={() => router.push('/garmin')}>
-                        <Text style={{ fontSize: 12, color: '#666666' }}>DEV SHORTCUT: Go to /garmin</Text>
-                    </Pressable>
                 </View>
 
                 <View style={styles.settingsSection}>
