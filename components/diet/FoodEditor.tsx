@@ -16,16 +16,42 @@ export default function FoodEditor() {
     const foodNameRef = useRef<RNTextInput>(null)
     const servingUnitRef = useRef<RNTextInput>(null)
     const servingsRef = useRef<RNTextInput>(null)
+    const noteRef = useRef<RNTextInput>(null)
     const caloriesRef = useRef<RNTextInput>(null)
     const proteinRef = useRef<RNTextInput>(null)
     const carbsRef = useRef<RNTextInput>(null)
     const fatsRef = useRef<RNTextInput>(null)
 
+    const [noteOpen, setNoteOpen] = useState<boolean>(false)
+    const [note, setNote] = useState<string>('')
     const [servingsField, setServingsField] = useState<string>('')
     const [caloriesField, setCaloriesField] = useState<string>('')
     const [proteinField, setProteinField] = useState<string>('')
     const [carbsField, setCarbsField] = useState<string>('')
     const [fatsField, setFatsField] = useState<string>('')
+
+    const handleClose = () => {
+        setIsOpen(false)
+        reset()
+    }
+
+    const handleNoteOpen = () => {
+        setNoteOpen(true)
+        setTimeout(() => {
+            noteRef.current?.focus()
+        }, 50)
+    }
+    const handleNoteClose = () => {
+        setNote('')
+        setNoteOpen(false)
+    }
+
+    const handleFocusFoodNameField = () => { foodNameRef.current?.focus() }
+    const handleFocusServingNameField = () => { servingUnitRef.current?.focus() }
+    const handleFocusCaloriesField = () => { caloriesRef.current?.focus() }
+    const handleFocusProteinField = () => { proteinRef.current?.focus() }
+    const handleFocusCarbsField = () => { carbsRef.current?.focus() }
+    const handleFocusFatsField = () => { fatsRef.current?.focus() }
 
     const handleSubmit = async () => {
         setLoading(true)
@@ -44,6 +70,7 @@ export default function FoodEditor() {
             await updateFoodEntryWithStore({
                 newFood: {
                     ...editorFood,
+                    note,
                     servings,
                     calories,
                     protein_g: protein,
@@ -81,30 +108,51 @@ export default function FoodEditor() {
             reset()
         }
     }
+    
+    // Initialize inputs
+    useEffect(() => {
+        if (editorFood.note) {
+            setNote(editorFood.note)
+            handleNoteOpen()
+        }
+        if (editorFood.servings) setServingsField(editorFood.servings.toString())
+        if (editorFood.calories) setCaloriesField(editorFood.calories.toString())
+        if (editorFood.protein_g) setProteinField(editorFood.protein_g.toString())
+        if (editorFood.carbs_g) setCarbsField(editorFood.carbs_g.toString())
+        if (editorFood.fat_g) setFatsField(editorFood.fat_g.toString())
+    }, [editorFood])
 
-    const handleFocusFoodNameField = () => { foodNameRef.current?.focus() }
-    const handleFocusServingNameField = () => { servingUnitRef.current?.focus() }
-    const handleFocusCaloriesField = () => { caloriesRef.current?.focus() }
-    const handleFocusProteinField = () => { proteinRef.current?.focus() }
-    const handleFocusCarbsField = () => { carbsRef.current?.focus() }
-    const handleFocusFatsField = () => { fatsRef.current?.focus() }
-
+    // Focus name on open
     useEffect(() => {
         handleFocusFoodNameField()
     }, [])
 
+    // If no note, close field
+    useEffect(() => {
+        const keyboardListener = Keyboard.addListener('keyboardDidHide', () => {
+            if (!note.trim()) {
+                handleNoteClose()
+            }
+        })
+        return () => {
+            keyboardListener.remove()
+        }
+    }, [note])
+
     return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <TouchableWithoutFeedback onPress={handleClose}>
             <KeyboardAvoidingView
                 style={styles.overlay}
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 keyboardVerticalOffset={0}
             >
-                <SafeAreaView style={styles.deleteButtonContainer}>
-                    <TouchableOpacity style={styles.deleteButton} onPress={handleCloseDelete}>
-                        <Ionicons name="trash-outline" size={24} color="#666666" />
-                    </TouchableOpacity>
-                </SafeAreaView>
+                {editorFood.id && (
+                    <SafeAreaView style={styles.deleteButtonContainer}>
+                        <TouchableOpacity style={styles.deleteButton} onPress={handleCloseDelete}>
+                            <Ionicons name="trash-outline" size={24} color="#666666" />
+                        </TouchableOpacity>
+                    </SafeAreaView>
+                )}
 
                 <View style={styles.popup}>
                     <View>
@@ -141,9 +189,24 @@ export default function FoodEditor() {
                             />
                         </View>
                         <View style={styles.noteButtonContainer}>
-                            <View>
-                                <Button text="+ Note" onPress={() => {}} size="small" color="white"/>
-                            </View>
+                            {noteOpen ? (
+                                <View style={styles.noteInputContainer}>
+                                    <Text style={styles.label}>Note</Text>
+                                    <TextInput
+                                        ref={noteRef}
+                                        style={styles.noteInput}
+                                        value={note}
+                                        onChangeText={setNote}
+                                    />
+                                </View>
+                            ) : (
+                                <View>
+                                    <Text style={styles.label} />
+                                    <View>
+                                        <Button text="+ Note" onPress={handleNoteOpen} size="small" color="white"/>
+                                    </View>
+                                </View>
+                            )}
                         </View>
                     </View>
                     

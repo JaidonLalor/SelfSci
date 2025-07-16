@@ -15,7 +15,8 @@ export const styles = StyleSheet.create({
         borderRadius: 18,
         padding: 20,
         display: 'flex',
-        gap: 12
+        gap: 12,
+        marginTop: '20%'
     },
     servingNoteLayout: {
         width: '100%',
@@ -29,11 +30,17 @@ export const styles = StyleSheet.create({
     },
     noteButtonContainer: {
         flex: 1,
-        height: 40,
+        height: '100%',
         display: 'flex',
         justifyContent: 'flex-start',
         alignItems: 'flex-end',
-        
+    },
+    noteInputContainer: {
+        width: '100%',
+        alignItems: 'flex-start'
+    },
+    noteInput: {
+        width: '100%'
     },
     button: {
         height: 40,

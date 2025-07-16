@@ -44,35 +44,25 @@ export const styles = StyleSheet.create({
     },
     entriesContainer: {
         marginBottom: 120,
-        backgroundColor: 'red'
     },
-    monthCard: {
-        marginBottom: 10
-    },
-    monthHeader: {
+    foodRow: {
         flexDirection: 'row',
-        alignItems: 'center',
-        gap: 12,
-        marginBottom: 5
-    },
-    monthHeaderText: {
-        fontSize: 18,
-        color: '#B4B4B4'
-    },
-    monthHeaderLine: {
-        height: 1,
-        flex: 1,
-        backgroundColor: '#B4B4B4'
-    },
-    expenseRow: {
         paddingTop: 8,
         paddingBottom: 8,
-        flexDirection: 'row',
+        gap: 8,
     },
-    expenseName: {
-        fontSize: 18,
-        color: "#B4B4B4",
-        width: '50%'
+    nameCell: {
+        fontSize: 16,
+        width: 125,
+        color: '#B4B4B4',
+    },
+    foodCell: {
+        fontSize: 16,
+        flex: 1,
+        color: '#B4B4B4',
+    },
+    fatCell: {
+        maxWidth: 25,
     },
     addButtonContainer: {
         position: 'absolute',
