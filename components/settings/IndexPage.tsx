@@ -112,11 +112,16 @@ export default function SettingsPage() {
                             <Text style={{ fontSize: 24, color: '#B4B4B4' }}>Off</Text>
                         )}
                     </Pressable>
+                    <Pressable style={styles.settingsRow} onPress={() => handleUpdate('journal')}>
+                        <Text style={{ fontSize: 24, color: '#666666' }}>Journal</Text>
+                        {userSettings?.enabled_menu_items?.journal ? (
+                            <Text style={{ fontSize: 24, color: '#B4B4B4' }}>On</Text>
+                        ) : (
+                            <Text style={{ fontSize: 24, color: '#B4B4B4' }}>Off</Text>
+                        )}
+                    </Pressable>
                     <Pressable style={styles.settingsRow} onPress={() => handleUpdate('biotracker')}>
                         <Text style={{ fontSize: 24, color: '#B4B4B4' }}>Biotracker</Text>
-                    </Pressable>
-                    <Pressable style={styles.settingsRow}>
-                        <Text style={{ fontSize: 24, color: '#B4B4B4' }}>Journal</Text>
                     </Pressable>
                     <Pressable style={styles.settingsRow}>
                         <Text style={{ fontSize: 24, color: '#B4B4B4' }}>Task</Text>

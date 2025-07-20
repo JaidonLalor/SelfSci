@@ -66,10 +66,6 @@ export default function IndexPage() {
                 </Pressable>
 
                 <Pressable style={globalStyles.textMenuPressable} >
-                    <Text style={globalStyles.textMenuTextDisabled} >Journal</Text>
-                </Pressable>
-
-                <Pressable style={globalStyles.textMenuPressable} >
                     <Text style={globalStyles.textMenuTextDisabled} >Task</Text>
                 </Pressable> */}
 
@@ -79,6 +75,15 @@ export default function IndexPage() {
                         onPress={() => router.push('/receipt')}
                         >
                         <Text style={globalStyles.textMenuText} >Receipt</Text>
+                    </Pressable>
+                )}
+                
+                {userSettings?.enabled_menu_items?.journal && (
+                    <Pressable
+                        style={globalStyles.textMenuPressable}
+                        onPress={() => router.push('/journal')}
+                        >
+                        <Text style={globalStyles.textMenuText} >Journal</Text>
                     </Pressable>
                 )}
             </View>

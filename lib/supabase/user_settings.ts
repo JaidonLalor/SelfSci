@@ -9,6 +9,7 @@ export type UserSettings = {
         mood: boolean
         expense: boolean
         biotracker: boolean
+        journal: boolean
     } | null
     theme: 'gray' | null
     updated_at: string // ISO
@@ -27,7 +28,8 @@ export const DEFAULT_USER_SETTINGS: UserSettings = {
         workout: true,
         mood: true,
         expense: true,
-        biotracker: false
+        biotracker: false,
+        journal: false
     },
     theme: 'gray',
     updated_at: '',
@@ -36,6 +38,13 @@ export const DEFAULT_USER_SETTINGS: UserSettings = {
     garmin_access_token: null,
     garmin_refresh_token: null,
     garmin_token_issued_at: null
+}
+
+function patchEnabledMenuItems(stored: any): Required<UserSettings['enabled_menu_items']> {
+  return {
+    ...DEFAULT_USER_SETTINGS.enabled_menu_items,
+    ...(stored || {}) // merge existing keys
+  }
 }
 
 export async function getUserSettings(): Promise<UserSettings> {
@@ -74,7 +83,10 @@ export async function getUserSettings(): Promise<UserSettings> {
         return inserted as UserSettings
     }
 
-    return data as UserSettings
+    return {
+        ...data,
+        enabled_menu_items: patchEnabledMenuItems(data.enabled_menu_items)
+    } as UserSettings
 }
 
 export async function updateUserSettings({
