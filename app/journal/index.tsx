@@ -1,1 +1,1 @@
-export { default } from '@/components/journal/EntryEditor'
+export { default } from '@/components/journal/EntriesList'

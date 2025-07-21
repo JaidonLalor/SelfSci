@@ -14,6 +14,10 @@ export const styles = StyleSheet.create({
         textDecorationLine: 'underline',
         fontSize: 18
     },
+    headerText: {
+        color: '#B4B4B4',
+        fontSize: 18
+    },
     darkHeaderLink: {
         color: '#666666',
         textDecorationLine: 'underline',
