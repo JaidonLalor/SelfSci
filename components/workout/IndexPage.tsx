@@ -1,5 +1,5 @@
 import { globalStyles } from "@/components/shared/globalStyles";
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, ScrollView } from "react-native";
 import Header from "@/components/shared/Header";
 import { useEffect, useState } from "react";
 import { useExerciseSets } from "@/stores/exercise_sets";
@@ -52,7 +52,10 @@ export default function IndexPage() {
                 {loading && <Text style={styles.stateMessage}>Loading...</Text>}
 
                 {exerciseSets && (
-                    <View>
+                    <ScrollView
+                        style={styles.scrollView}
+                        showsVerticalScrollIndicator={false}
+                    >
                         {[...new Set(exerciseSets.map((e) => e.name))].map((name, index) => (
                         <Pressable
                             onPress={() => router.push(`/workout/${name}`)}
@@ -62,7 +65,7 @@ export default function IndexPage() {
                             <Text style={globalStyles.textMenuText}>{name}</Text>
                         </Pressable>
                         ))}
-                    </View>
+                    </ScrollView>
                 )}
                 
                 <Button

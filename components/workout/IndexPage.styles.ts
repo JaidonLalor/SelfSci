@@ -1,6 +1,10 @@
 import { StyleSheet } from "react-native"
 
 export const styles = StyleSheet.create({
+    scrollView: {
+        overflow: 'visible',
+        marginBottom: 120
+    },
     content: {
         position: 'relative',
         flex: 1,
