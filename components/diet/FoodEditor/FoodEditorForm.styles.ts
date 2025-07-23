@@ -109,4 +109,26 @@ export const styles = StyleSheet.create({
         backgroundColor: '#D5D5D5',
         borderRadius: 18
     },
+    dropdown: {
+        position: 'absolute',
+        top: 54,
+        width: '100%',
+        backgroundColor: '#fff',
+        borderColor: '#ccc',
+        borderWidth: 1,
+        borderRadius: 8,
+        marginTop: 4,
+        zIndex: 99, // ensure it's on top
+        maxHeight: 136,
+    },
+    dropdownItem: {
+        paddingVertical: 8,
+        paddingHorizontal: 12,
+        borderBottomColor: '#ccc',
+        borderBottomWidth: 1,
+    },
+    dropdownText: {
+        fontSize: 16,
+        color: '#666666'
+    }
 })

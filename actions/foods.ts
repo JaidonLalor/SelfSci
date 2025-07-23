@@ -8,7 +8,7 @@ export async function fetchFoodEntriesWithStore() {
     return foods
 }
 
-export async function updateFoodEntryWithStore({ newFood }: { newFood: FoodEntry }): Promise<FoodEntry> {
+export async function updateFoodEntryWithStore({ newFood }: { newFood: Partial<FoodEntry> }): Promise<FoodEntry> {
     const { updateFoodEntriesInStore } = useFoodEntries.getState()
     const updatedFood = await updateFoodEntry(newFood)
     updateFoodEntriesInStore(updatedFood)

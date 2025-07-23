@@ -1,1 +1,1 @@
-export { default } from '@/components/diet/index'
+export { default } from '@/components/diet/Day'

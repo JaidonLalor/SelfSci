@@ -1,17 +1,38 @@
 import { Ionicons } from "@expo/vector-icons";
-import { View, Text, TextInput as RNTextInput, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback, TouchableOpacity } from "react-native";
-import Button from "../shared/Button";
-import { styles } from "./FoodEditor.styles";
+import { View, Text, TextInput as RNTextInput, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback, TouchableOpacity, ScrollView } from "react-native";
+import Button from "../../shared/Button";
+import { styles } from "./FoodEditorForm.styles";
 import { useFoodEditor } from "@/stores/food_editor";
-import TextInput from "../shared/TextInput";
+import TextInput from "../../shared/TextInput";
 import { useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { globalStyles } from "../shared/globalStyles";
-import { deleteFoodEntryWithStore, updateFoodEntryWithStore } from "@/actions/foods";
-import { getErrorMessage } from "@/lib/utils";
+import { globalStyles } from "../../shared/globalStyles";
+import { fetchFoodPresetsWithStore } from "@/actions/foodPresets";
+import { useFoodPresets } from "@/stores/food_presets";
+import { FoodPreset } from "@/lib/supabase/food_presets";
 
-export default function FoodEditor() {
-    const { editorFood, setEditorFood, loading, setLoading, setIsOpen, error, setError, reset } = useFoodEditor()
+export type FoodEditorPayload = {
+    name: string,
+    servingsUnit: string,
+    noteOpen: boolean,
+    note?: string,
+    servings: number,
+    calories: number,
+    protein: number,
+    carbs: number,
+    fat: number
+}
+
+type FoodEditorProps = {
+    onSubmit: (payload: FoodEditorPayload) => void
+    onDelete: (id: string) => void
+    showServings?: boolean
+    autoFill?: boolean
+}
+
+export default function FoodEditor({ onSubmit, onDelete, showServings = true, autoFill = true }: FoodEditorProps) {
+    const { foodPresets } = useFoodPresets()
+    const { editorFood, loading, error, setIsOpen, reset } = useFoodEditor()
 
     const foodNameRef = useRef<RNTextInput>(null)
     const servingUnitRef = useRef<RNTextInput>(null)
@@ -22,13 +43,43 @@ export default function FoodEditor() {
     const carbsRef = useRef<RNTextInput>(null)
     const fatsRef = useRef<RNTextInput>(null)
 
-    const [noteOpen, setNoteOpen] = useState<boolean>(false)
-    const [note, setNote] = useState<string>('')
-    const [servingsField, setServingsField] = useState<string>('')
-    const [caloriesField, setCaloriesField] = useState<string>('')
-    const [proteinField, setProteinField] = useState<string>('')
-    const [carbsField, setCarbsField] = useState<string>('')
-    const [fatsField, setFatsField] = useState<string>('')
+    const [form, setForm] = useState({
+        name: '',
+        servingsUnit: '',
+        noteOpen: false,
+        note: '',
+        servings: '',
+        calories: '',
+        protein: '',
+        carbs: '',
+        fat: '',
+    })
+
+    useEffect(() => {
+        if (autoFill && !foodPresets) fetchFoodPresetsWithStore()
+    }, [autoFill, foodPresets, fetchFoodPresetsWithStore])
+
+    const [matchingPresets, setMatchingPresets] = useState<FoodPreset[]>([])
+
+
+    // Initialize inputs
+    useEffect(() => {
+        if (editorFood.id) {
+            setForm({
+                name: editorFood.name || '',
+                servingsUnit: editorFood.servings_unit || '',
+                noteOpen: !!editorFood.note, // true if there's a note
+                note: editorFood.note || '',
+                servings: editorFood.servings?.toString() || '',
+                calories: editorFood.calories?.toString() || '',
+                protein: editorFood.protein_g?.toString() || '',
+                carbs: editorFood.carbs_g?.toString() || '',
+                fat: editorFood.fat_g?.toString() || '',
+            })
+        }
+
+        if (editorFood.note) handleNoteOpen()
+    }, [editorFood])
 
     const handleClose = () => {
         setIsOpen(false)
@@ -36,14 +87,56 @@ export default function FoodEditor() {
     }
 
     const handleNoteOpen = () => {
-        setNoteOpen(true)
+        setForm((prev) => ({
+            ...prev,
+            noteOpen: true,
+        }))
         setTimeout(() => {
             noteRef.current?.focus()
         }, 50)
     }
+
     const handleNoteClose = () => {
-        setNote('')
-        setNoteOpen(false)
+        setForm((prev) => ({
+            ...prev,
+            note: '',
+            noteOpen: false,
+        }))
+    }
+
+    const handleSelectPreset = (preset: FoodPreset) => {
+        setForm({
+            name: preset.name,
+            servingsUnit: preset.servings_unit,
+            noteOpen: !!preset.note,
+            note: preset.note ?? '',
+            servings: '', // let user fill this if needed
+            calories: preset.calories.toString(),
+            protein: preset.protein_g.toString(),
+            carbs: preset.carbs_g.toString(),
+            fat: preset.fat_g.toString(),
+        })
+        setMatchingPresets([])
+    }
+
+    const handleSubmit = () => {
+        const parsed: FoodEditorPayload = {
+            name: form.name.trim(),
+            servingsUnit: form.servingsUnit.trim(),
+            noteOpen: form.noteOpen,
+            note: form.note?.trim() || undefined,
+            servings: Number(form.servings || 0),
+            calories: Number(form.calories || 0),
+            protein: Number(form.protein || 0),
+            carbs: Number(form.carbs || 0),
+            fat: Number(form.fat || 0),
+        }
+        onSubmit(parsed)
+    }
+
+    const handleDelete = () => {
+        if (!editorFood.id) return
+        onDelete(editorFood.id)
     }
 
     const handleFocusFoodNameField = () => { foodNameRef.current?.focus() }
@@ -53,75 +146,6 @@ export default function FoodEditor() {
     const handleFocusCarbsField = () => { carbsRef.current?.focus() }
     const handleFocusFatsField = () => { fatsRef.current?.focus() }
 
-    const handleSubmit = async () => {
-        setLoading(true)
-        setError('')
-
-        const servings = Number(servingsField || 0)
-        const calories = Number(caloriesField || 0)
-        const protein = Number(proteinField || 0)
-        const carbs = Number(carbsField || 0)
-        const fat = Number(fatsField || 0)
-
-        try {
-            
-            if (!editorFood.servings_unit) throw new Error('No serving size')
-
-            await updateFoodEntryWithStore({
-                newFood: {
-                    ...editorFood,
-                    note,
-                    servings,
-                    calories,
-                    protein_g: protein,
-                    carbs_g: carbs,
-                    fat_g: fat,
-                }
-            })
-            setIsOpen(false)
-            reset()
-        } catch (error) {
-            const msg = getErrorMessage(error)
-            setError(msg)
-        } finally {
-            setLoading(false)
-        }
-    }
-    
-    const handleCloseDelete = async () => {
-        if (editorFood.id) {
-            setLoading(true)
-            setError('')
-            try {
-                await deleteFoodEntryWithStore(editorFood.id)
-                setIsOpen(false)
-                reset()
-                setError('')
-            } catch (error) {
-                const msg = getErrorMessage(error)
-                setError(msg)
-            } finally {
-                setLoading(false)
-            }
-        } else {
-            setIsOpen(false)
-            reset()
-        }
-    }
-    
-    // Initialize inputs
-    useEffect(() => {
-        if (editorFood.note) {
-            setNote(editorFood.note)
-            handleNoteOpen()
-        }
-        if (editorFood.servings) setServingsField(editorFood.servings.toString())
-        if (editorFood.calories) setCaloriesField(editorFood.calories.toString())
-        if (editorFood.protein_g) setProteinField(editorFood.protein_g.toString())
-        if (editorFood.carbs_g) setCarbsField(editorFood.carbs_g.toString())
-        if (editorFood.fat_g) setFatsField(editorFood.fat_g.toString())
-    }, [editorFood])
-
     // Focus name on open
     useEffect(() => {
         handleFocusFoodNameField()
@@ -130,14 +154,14 @@ export default function FoodEditor() {
     // If no note, close field
     useEffect(() => {
         const keyboardListener = Keyboard.addListener('keyboardDidHide', () => {
-            if (!note.trim()) {
+            if (!form.note.trim()) {
                 handleNoteClose()
             }
         })
         return () => {
             keyboardListener.remove()
         }
-    }, [note])
+    }, [form.note])
 
     return (
         <TouchableWithoutFeedback onPress={handleClose}>
@@ -148,7 +172,7 @@ export default function FoodEditor() {
             >
                 {editorFood.id && (
                     <SafeAreaView style={styles.deleteButtonContainer}>
-                        <TouchableOpacity style={styles.deleteButton} onPress={handleCloseDelete}>
+                        <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
                             <Ionicons name="trash-outline" size={24} color="#666666" />
                         </TouchableOpacity>
                     </SafeAreaView>
@@ -160,26 +184,50 @@ export default function FoodEditor() {
                         <TextInput
                             ref={foodNameRef}
                             placeholder="Oats"
-                            value={editorFood.name}
-                            onChangeText={(value) => {
-                                setEditorFood((prev) => ({ ...prev, name: value }))}
-                            }
+                            value={form.name}
+                            onChangeText={(val) => {
+                                setForm((prev) => ({ ...prev, name: val }))
+
+                                if (!val.trim()) {
+                                    setMatchingPresets([]) // ← clear if empty
+                                    return
+                                }
+
+                                const filtered = foodPresets?.filter((preset) =>
+                                    preset.name.toLowerCase().includes(val.toLowerCase())
+                                ) ?? []
+
+                                setMatchingPresets(filtered)
+                            }}
                             onSubmitEditing={handleFocusServingNameField}
                             returnKeyType="done"
                             autoCapitalize="words"
                             autoCorrect={false}
                             autoComplete="off"
                         />
+                        {matchingPresets.length > 0 && autoFill && (
+                            <View style={styles.dropdown}>
+                                <ScrollView keyboardShouldPersistTaps="handled">
+                                    {matchingPresets.slice(0, 5).map((preset) => (
+                                        <TouchableOpacity
+                                            key={preset.id}
+                                            onPress={() => handleSelectPreset(preset)}
+                                            style={styles.dropdownItem}
+                                        >
+                                            <Text style={styles.dropdownText}>{preset.name}</Text>
+                                        </TouchableOpacity>
+                                    ))}
+                                </ScrollView>
+                            </View>
+                        )}
                     </View>
                     <View style={styles.servingNoteLayout}>
                         <View style={styles.servingSizeContainer}>
                             <Text style={styles.label}>Serving size</Text>
                             <TextInput
                                 ref={servingUnitRef}
-                                value={editorFood.servings_unit}
-                                onChangeText={(value) => {
-                                    setEditorFood((prev) => ({ ...prev, servings_unit: value }))}
-                                }
+                                value={form.servingsUnit}
+                                onChangeText={(val) => setForm((prev) => ({ ...prev, servingsUnit: val }))}
                                 onSubmitEditing={handleFocusServingNameField}
                                 placeholder="1 cup"
                                 returnKeyType="done"
@@ -189,14 +237,14 @@ export default function FoodEditor() {
                             />
                         </View>
                         <View style={styles.noteButtonContainer}>
-                            {noteOpen ? (
+                            {form.noteOpen ? (
                                 <View style={styles.noteInputContainer}>
                                     <Text style={styles.label}>Note</Text>
                                     <TextInput
                                         ref={noteRef}
                                         style={styles.noteInput}
-                                        value={note}
-                                        onChangeText={setNote}
+                                        value={form.note}
+                                        onChangeText={(val) => setForm((prev) => ({ ...prev, note: val }))}
                                     />
                                 </View>
                             ) : (
@@ -211,18 +259,20 @@ export default function FoodEditor() {
                     </View>
                     
                     <View style={styles.numberColumnContainer}>
-                        <View style={styles.numberColumn}>
-                            <Text style={styles.label}>Servings</Text>
-                            <TextInput
-                                ref={servingsRef}
-                                style={styles.numberColumnNumberField}
-                                placeholder="0"
-                                value={servingsField}
-                                onChangeText={(value) => setServingsField(value)}
-                                keyboardType="decimal-pad"
-                                onSubmitEditing={handleFocusCaloriesField}
-                            />
-                        </View>
+                        {showServings && (
+                            <View style={styles.numberColumn}>
+                                <Text style={styles.label}>Servings</Text>
+                                <TextInput
+                                    ref={servingsRef}
+                                    style={styles.numberColumnNumberField}
+                                    placeholder="0"
+                                    value={form.servings}
+                                    onChangeText={(val) => setForm((prev) => ({ ...prev, servings: val }))}
+                                    keyboardType="decimal-pad"
+                                    onSubmitEditing={handleFocusCaloriesField}
+                                />
+                            </View>
+                        )}
                         
                         <View style={styles.numberColumn}>
                             <Text style={styles.label}>Calories</Text>
@@ -230,8 +280,8 @@ export default function FoodEditor() {
                                 ref={caloriesRef}
                                 style={styles.numberColumnNumberField}
                                 placeholder="0"
-                                value={caloriesField}
-                                onChangeText={(value) => setCaloriesField(value)}
+                                value={form.calories}
+                                onChangeText={(val) => setForm((prev) => ({ ...prev, calories: val }))}
                                 keyboardType="decimal-pad"
                                 onSubmitEditing={handleFocusProteinField}
                             />
@@ -243,8 +293,8 @@ export default function FoodEditor() {
                                 ref={proteinRef}
                                 style={styles.numberColumnNumberField}
                                 placeholder="0"
-                                value={proteinField}
-                                onChangeText={(value) => setProteinField(value)}
+                                value={form.protein}
+                                onChangeText={(val) => setForm((prev) => ({ ...prev, protein: val }))}
                                 keyboardType="decimal-pad"
                                 onSubmitEditing={handleFocusCarbsField}
                             />
@@ -256,8 +306,8 @@ export default function FoodEditor() {
                                 ref={carbsRef}
                                 style={styles.numberColumnNumberField}
                                 placeholder="0"
-                                value={carbsField}
-                                onChangeText={(value) => setCarbsField(value)}
+                                value={form.carbs}
+                                onChangeText={(val) => setForm((prev) => ({ ...prev, carbs: val }))}
                                 keyboardType="decimal-pad"
                                 onSubmitEditing={handleFocusFatsField}
                             />
@@ -269,8 +319,8 @@ export default function FoodEditor() {
                                 ref={fatsRef}
                                 style={styles.numberColumnNumberField}
                                 placeholder="0"
-                                value={fatsField}
-                                onChangeText={(value) => setFatsField(value)}
+                                value={form.fat}
+                                onChangeText={(val) => setForm((prev) => ({ ...prev, fat: val }))}
                                 keyboardType="decimal-pad"
                                 onSubmitEditing={handleSubmit}
                             />

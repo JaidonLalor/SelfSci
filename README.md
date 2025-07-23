@@ -3,23 +3,24 @@
 An experiment to know thyself
 
 ## Mini todos
--[ ] Garmin token refresh (if needed)
--[ ] Garmin update perms
--[ ] /garmin page redirects to settings, but going back takes you back to /garmin
-    -[ ] Create custom link and route in header component
--[ ] Garmin disconnect "are you sure?" popup
--[ ] Receipt name entry desktop is messed up!
--[ ] Receipt name entry sentence case default
--[ ] Workout name entry sentence case default
+
+- [ ] Make diet browser work
+---
+- [ ] Garmin token refresh (if needed)
+- [ ] Garmin update perms
+- [ ] /garmin page redirects to settings, but going back takes you back to /garmin
+    - [ ] Create custom link and route in header component
+- [ ] Garmin disconnect "are you sure?" popup
+- [ ] Receipt name entry desktop is messed up!
+- [ ] Receipt name entry sentence case default
+- [ ] Workout name entry sentence case default
 
 ## Roadmap
 
 1. Actually use it, and see what needs to be added accordingly
-2. Diet
-3. Garmin
-4. Tasks
-5. Reflection summaries (daily, monthly)
-6. Journal
+2. Garmin
+3. Tasks
+4. Daily summaries (daily, monthly)
 
 ## How to dev server
 
