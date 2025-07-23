@@ -47,6 +47,7 @@ Note: env vars must be implemented in the profile's eas.json, and app.json must 
 4. Xcode GUI: Click SelfSci in the top bar > Edit Scheme > Build Configuration: Release
 5. Xcode GUI: In left panel, select folder icon > SelfSci > Signing & Capabilities (tab near top middle) > Team: Jaidon Lalor
 6. Click play button
+7. Delete the "dist" and "ios" directories, so you can use "npx expo start" again
 
 ## How to view iphone crash logs
 

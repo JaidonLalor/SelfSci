@@ -1,4 +1,4 @@
 .env
-dis/
-node_modules/
+dist/
+ios/
 node_modules/
