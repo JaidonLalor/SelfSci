@@ -41,7 +41,12 @@ Note: env vars must be implemented in the profile's eas.json, and app.json must 
 2. Download on phone via QR code or link
 
 ### Build locally
-For IOS, you have to prebuild and then build in Xcode... idk how to do it
+1. Create a special branch for the build
+2. CLI: npx expo prebuild --platform ios
+3. CLI: open ios/SelfSci.xcworkspace
+4. Xcode GUI: Click SelfSci in the top bar > Edit Scheme > Build Configuration: Release
+5. Xcode GUI: In left panel, select folder icon > SelfSci > Signing & Capabilities (tab near top middle) > Team: Jaidon Lalor
+6. Click play button
 
 ## How to view iphone crash logs
 
