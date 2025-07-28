@@ -21,6 +21,7 @@ function getTotalsPerDay(foodEntries: FoodEntry[]): DailyTotals[] {
 
     for (const entry of foodEntries) {
         const date = new Date(entry.entry_timestamp).toLocaleDateString('en-CA') // "YYYY-MM-DD"
+        const servings = entry.servings ?? 1
 
         if (!totalsMap[date]) {
             totalsMap[date] = {
@@ -32,10 +33,10 @@ function getTotalsPerDay(foodEntries: FoodEntry[]): DailyTotals[] {
             }
         }
 
-        totalsMap[date].calories += entry.calories
-        totalsMap[date].protein_g += entry.protein_g
-        totalsMap[date].carbs_g += entry.carbs_g
-        totalsMap[date].fat_g += entry.fat_g
+        totalsMap[date].calories += entry.calories * servings
+        totalsMap[date].protein_g += entry.protein_g * servings
+        totalsMap[date].carbs_g += entry.carbs_g * servings
+        totalsMap[date].fat_g += entry.fat_g * servings
     }
 
     // Convert map to array and sort by most recent date first
